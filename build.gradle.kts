@@ -48,6 +48,9 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.3.4")   // HTTP Client (CIO Engine)
     implementation("io.ktor:ktor-client-content-negotiation:2.3.4") // Content Negotiation
 
+    //Logging
+    implementation ("io.github.oshai:kotlin-logging-jvm:7.0.3")
+
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
 }

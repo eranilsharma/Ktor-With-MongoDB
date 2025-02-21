@@ -1,5 +1,8 @@
 package com.sharma
 
+import com.sharma.com.sharma.data.car.CarDataSource
+import com.sharma.com.sharma.data.car.MongoCarDataSource
+import com.sharma.com.sharma.data.car.carRoutes
 import com.sharma.com.sharma.data.jokes.JokeDataSource
 import com.sharma.com.sharma.data.jokes.getJokes
 import com.sharma.com.sharma.data.jokes.getJokesWithPagination
@@ -25,7 +28,8 @@ fun Application.configureRouting(
     tokenService: TokenService,
     tokenConfig: TokenConfig,
     notesDataSource: NotesDataSource,
-    jokeDataSource: JokeDataSource
+    jokeDataSource: JokeDataSource,
+    carDataSource: CarDataSource
 ) {
     routing {
         signUpRoute(hashingService, userDataSource)
@@ -38,5 +42,6 @@ fun Application.configureRouting(
         jokeRoutes(jokeDataSource)
         getJokes(jokeDataSource)
         getJokesWithPagination(jokeDataSource)
+        carRoutes(carDataSource)
     }
 }

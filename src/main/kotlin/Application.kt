@@ -1,5 +1,6 @@
 package com.sharma
 
+import com.sharma.com.sharma.data.car.MongoCarDataSource
 import com.sharma.com.sharma.data.jokes.MongoJokeDataSource
 import com.sharma.com.sharma.data.notes.MongoNoteDataSource
 import com.sharma.com.sharma.data.user.MongoUserDataSource
@@ -17,23 +18,32 @@ fun main(args: Array<String>) {
 fun Application.module() {
     val MONGO_PW = System.getenv("MONGO_PW")
     val dbName = "ktor"
-    val db = KMongo.createClient(connectionString = "mongodb+srv://eranilsharma:$MONGO_PW@cluster0.8afbj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-        .coroutine.getDatabase(dbName)
+    val db =
+        KMongo.createClient(connectionString = "mongodb+srv://eranilsharma:$MONGO_PW@cluster0.8afbj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+            .coroutine.getDatabase(dbName)
 
     val userDataSource = MongoUserDataSource(db)
     val notesDataSource = MongoNoteDataSource(db)
     val jokeDataSource = MongoJokeDataSource(db)
+    val carDataSource = MongoCarDataSource(db)
     val tokenService = JwtTokenService()
     val tokenConfig = TokenConfig(
         issuer = environment.config.property("jwt.issuer").getString(),
         audience = environment.config.property("jwt.audience").getString(),
-        expiresIn = 365L * 1000L * 60L * 60L * 24L,
+        expiresIn = 1000L * 60L * 30L,
         secret = System.getenv("JWT_SECRET")
     )
     val hashingService = SHA256HashingService()
     configureSerialization()
-//    configureDatabases()
     configureMonitoring()
     configureSecurity(tokenConfig)
-    configureRouting(userDataSource, hashingService, tokenService, tokenConfig,notesDataSource,jokeDataSource)
+    configureRouting(
+        userDataSource,
+        hashingService,
+        tokenService,
+        tokenConfig,
+        notesDataSource,
+        jokeDataSource,
+        carDataSource
+    )
 }
